@@ -1,16 +1,36 @@
+import { useEffect } from "react"
+import { useEvaluacionStore } from "../store/useEvaluacion"
+import { usePageStore } from "../store/usePage"
 
 function EvaluacionList() {
+    const {updateAulaSelected, loadAsignaturasAula, aulas, asignaturas } = useEvaluacionStore()
+    const {isLoadPage} = usePageStore()
+
+
+    useEffect(()=> {
+        if (!isLoadPage) return
+
+        loadAsignaturasAula()
+    }, [isLoadPage])
+
+    const onAulaSelected = (e) => {
+        updateAulaSelected(+e.target.value)
+    }
 
     return <div className="main">
         <form  className="control-top">
             <label className="control-top__label" htmlFor="">Aula:</label>
-            <select className="control-top__select">
-                <option value="1">6to grado</option>
-                <option value="1">8to grado</option>
+            <select className="control-top__select" onChange={onAulaSelected}>
+            {aulas.map(aula => {
+                return <option key={aula.id} value={aula.id}>{aula.grado.nombre_largo} "{aula.seccion.letra}"</option>
+            })}
             </select>
             <select className="control-top__select">
-                <option value="1">A</option>
-                <option value="1">B</option>
+                {
+                    asignaturas.map(asignatura => {                    
+                        return <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
+                    })
+                }
             </select>
         </form>
         <div className="main__col">
