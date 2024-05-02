@@ -315,3 +315,18 @@
     width: 200px;
     height: 40px;
 }
+
+
+
+
+.formEvaluacion__input {
+    width: 54px;
+    height: 54px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    background: #eee;
+    outline: none;
+}
+

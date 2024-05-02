@@ -9,7 +9,7 @@ function FormAula() {
 
     const { isActiveForm, setLoadPage, activarForm } = usePageStore()
     const { grados, secciones } = useAulaStore()
-    const {aulaSelected} = useSelectedStore()
+    const { aulaSelected } = useSelectedStore()
     const { updateAula, createAula, loadGrados, loadSecciones } = useAulaStore()
     const { setValue, register, handleSubmit } = useForm({
         defaultValues: {
@@ -26,7 +26,7 @@ function FormAula() {
 
 
     useEffect(() => {
-        
+
         if (aulaSelected !== null) {
             setValue("gradoId", aulaSelected.grado.id)
             setValue("seccionId", aulaSelected.seccion.id)
@@ -47,7 +47,10 @@ function FormAula() {
         setLoadPage(true)
     })
 
-    if (!isActiveForm) return null
+    const isShowForm = () => isActiveForm && grados.length > 0 && secciones.length > 0
+
+
+    if (!isShowForm()) return null
 
     return <div className="main__col main__col--der">
         <form className="formNew" onSubmit={onSubmit}>

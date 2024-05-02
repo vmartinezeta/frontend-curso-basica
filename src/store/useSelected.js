@@ -5,6 +5,10 @@ import { persist } from "zustand/middleware";
 export const useSelectedStore = create(persist((set)=>({
     cursoSelected: null,
     aulaSelected: null,
+    asignacionIdSelected:null,
+    setAsignacionIdSelected: (asignacionIdSelected)=> {
+        set(()=>({asignacionIdSelected}))
+    },
     setCursoSelected: (cursoSelected)=>{
         set(()=>({
             cursoSelected
