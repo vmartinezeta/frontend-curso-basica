@@ -13,6 +13,7 @@ import Grado from "./pages/Grado"
 import Asignacion from "./pages/Asignacion"
 import ProtectedRouteProfesor from "./components/ProtectedRouteProfesor"
 import Evaluacion from "./pages/EvaluacionPage"
+import Periodo from "./pages/Periodo"
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/grado" element={<Grado />} />
         <Route path="/aula" element={<Aula />} />
         <Route path="/curso" element={<Curso />} />
+        <Route path="/periodo" element={<Periodo />} />
         <Route path="/alumno" element={<Alumno />} />
         <Route path="/profesor" element={<Profesor />} />
         <Route path="/asignacion" element={<Asignacion />} />

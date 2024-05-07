@@ -53,23 +53,23 @@ function FormAula() {
     if (!isShowForm()) return null
 
     return <div className="main__col main__col--der">
-        <form className="formNew" onSubmit={onSubmit}>
-            <h1 className="formNew__titulo">{aulaSelected !== null ? "Editando aula" : "Nueva aula"}</h1>
-            <select className="formNew__select" {...register("gradoId")} defaultChecked={aulaSelected !== null && aulaSelected.gID}>
+        <form className="form-nuevo" onSubmit={onSubmit}>
+            <h1 className="form-nuevo__title">{aulaSelected !== null ? "Editando aula" : "Nueva aula"}</h1>
+            <select className="form-nuevo__select" {...register("gradoId")} defaultChecked={aulaSelected !== null && aulaSelected.grado.id}>
                 {
                     grados.map(g => {
                         return <option key={g.id} value={g.id} >{g.nombre_largo}</option>
                     })
                 }
             </select>
-            <select className="formNew__select" {...register("seccionId")} defaultChecked={aulaSelected !== null && aulaSelected.sID} >
+            <select className="form-nuevo__select" {...register("seccionId")} defaultChecked={aulaSelected !== null && aulaSelected.seccion.id} >
                 {
                     secciones.map(s => {
                         return <option key={s.id} value={s.id}>{s.letra}</option>
                     })
                 }
             </select>
-            <button className="formNew__button">{aulaSelected !== null ? "Actualizar" : "Guardar"}</button>
+            <button className="form-nuevo__button">{aulaSelected !== null ? "Actualizar" : "Guardar"}</button>
         </form>
     </div>
 }

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { loginRequest } from "../api/auth";
+import { useSelectedStore } from "./useSelected";
 
 
 export const useAuthStore = create(persist((set, get) => ({
@@ -10,10 +11,14 @@ export const useAuthStore = create(persist((set, get) => ({
     try {
       const res = await loginRequest(data)
       const user = res.data
-      set((state) => ({ user, isAuth: true }))
+      set(() => ({ user, isAuth: true }))
     } catch (error) { }
   },
-  logout: () => set(() => ({ user: null, token: null, profile: null, isAuth: false }))
+  logout: () => {
+    const { setPeriodoSelected } = useSelectedStore.getState()
+    setPeriodoSelected(null)
+    set(() => ({ user: null, isAuth: false }))
+  }
 }),
   {
     name: "auth",

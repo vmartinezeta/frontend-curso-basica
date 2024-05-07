@@ -1,72 +1,125 @@
 import { create } from "zustand"
-import { createEvaluacion, findAllAsignaturasAula, findEvaluacionByAula } from "../api/evaluacion"
+import { createEvaluacionRequest, createPeriodoRequest, findAllAsignacionesRequest, findAllPeriodoRequest, findAllTipoPeriodoRequest, findEvaluacionByAulaRequest, findPeriodoActivoRequest, togglePeriodoRequest } from "../api/evaluacion"
 import { useAuthStore } from "./auth"
 import { useSelectedStore } from "./useSelected"
 
 
 
 export const useEvaluacionStore = create((set, get) => ({
-    asignaturasAula: [],
+    asignaciones: [],
     asignaturas: [],
     aulas: [],
-    evaluacion: [],
+    evaluaciones: [],
+    periodos: [],
+    tipos: [],
     rowSelected: null,
+    aulaId: 0,
+    asignacionId: 0,
+    togglePeriodo: async (periodoId) => {
+        try {
+            await togglePeriodoRequest(periodoId)
+        } catch (error) { }
+    },
+    createPeriodo: async (periodo) => {
+        try {
+            const { cursoSelected } = useSelectedStore.getState()
+            periodo.cursoId = cursoSelected.id
+            await createPeriodoRequest(periodo)
+        } catch (error) { }
+    },
+    loadTipos: async () => {
+        try {
+            const res = await findAllTipoPeriodoRequest()
+            set(() => ({ tipos: res.data }))
+        } catch (error) { }
+    },
+    loadPeriodoActivo: async () => {
+        try {
+            const res = await findPeriodoActivoRequest()
+            const { setPeriodoSelected } = useSelectedStore.getState()
+            setPeriodoSelected(res.data)
+        } catch (error) { }
+    },
+    loadPeriodos: async () => {
+        try {
+            const res = await findAllPeriodoRequest()
+            set(() => ({ periodos: res.data }))
+        } catch (error) { }
+    },
     setRowSelected: (rowSelected) => {
         set(() => ({ rowSelected }))
     },
-    updateEvaluacion: (rowSelected) => {
-        const { evaluacion } = get()
-        const index = evaluacion.findIndex(eva => eva.alumnoAula.id === rowSelected.alumnoAula.id)
-        evaluacion[index] = rowSelected
-        set(() => ({ evaluacion }))
+    updateEvaluacion: (evaluacion) => {
+        const { evaluaciones } = get()
+        const index = evaluaciones.findIndex(actual => actual.alumnoAula.id === evaluacion.alumnoAula.id)
+        evaluaciones[index] = evaluacion
+        set(() => ({ evaluaciones }))
     },
-    createEvaluacion: (tabla) => {
+    createEvaluaciones: (evaluaciones) => {
         try {
-            createEvaluacion(tabla)
+            createEvaluacionRequest(evaluaciones)
         } catch (error) { }
     },
-    loadEvaluacion: async (aulaId) => {
+    loadEvaluacion: async (aulaId, asignacionId, periodoId) => {
         try {
-            const res = await findEvaluacionByAula(aulaId)
-            set(() => ({ evaluacion: res.data }))
+            const res = await findEvaluacionByAulaRequest(aulaId, asignacionId, periodoId)
+            set(() => ({ evaluaciones: res.data }))
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }
     },
-    updateAulaSelected: (aulaId) => {
-        const { asignaturasAula } = get()
-        const asignaturas = asignaturasAula.filter((row) => {
-            return row.aula.id === aulaId
-        }).map(row => row.asignatura)
-        set(() => ({ asignaturas }))
+    updateAsignacionByAula: (aulaId) => {
+        const { asignaciones, loadEvaluacion } = get()
+        const asignacionSelected = asignaciones.find(asignacion => {
+            return asignacion.aula.id === aulaId
+        })
+
+
+        const asignacionId = asignacionSelected.id
+
+        const asignaturas = asignaciones.filter(asignacion => {
+            return asignacion.aula.id === aulaId
+        }).map(asignacion => asignacion.asignatura)
+
+        const { periodoSelected } = useSelectedStore.getState()
+        loadEvaluacion(aulaId, asignacionId, periodoSelected.id)
+
+        set(() => ({ asignaturas, aulaId, asignacionId }))
     },
-    loadAsignaturasAula: async () => {
+    updateAsignacionByAsignatura: (asignaturaId) => {
+        const { aulaId, asignaciones, loadEvaluacion } = get()
+        const asignacion = asignaciones.find(asignacion => asignacion.aula.id === aulaId && asignacion.asignatura.id === asignaturaId)
+        set(() => ({ asignacionId: asignacion.id }))
+        const { periodoSelected } = useSelectedStore.getState()
+        loadEvaluacion(aulaId, asignacion.id, periodoSelected.id)
+    },
+    loadAsignaciones: async () => {
         try {
             const { user } = useAuthStore.getState()
-            const res = await findAllAsignaturasAula(user.username)
+            const res = await findAllAsignacionesRequest(user.username)
             const asignaciones = res.data
             const aulas = []
-            asignaciones.forEach(row => {
-                const { aula } = row
-                const reg = aulas.find(a => a.id === aula.id)
-                if (!reg) {
+            asignaciones.forEach(asignacion => {
+                const { aula } = asignacion
+                const actual = aulas.find(a => a.id === aula.id)
+                if (!actual) {
                     aulas.push(aula)
                 }
             });
-            const aulaSelected = aulas[0]
-            const asignaturas = asignaciones.filter((row) => {
-                return row.aula.id === aulaSelected.id
-            }).map(row => row.asignatura)
+            const [asignacionSelected] = asignaciones
+            const aulaId = asignacionSelected.aula.id
+
+            const asignaturas = asignaciones.filter(asignacion => {
+                return asignacion.aula.id === aulaId
+            }).map(asignacion => asignacion.asignatura)
 
 
-            const asignacionSelected = asignaciones.find(asignacion=>asignacion.id)
-            const asignacionIdSelected = asignacionSelected.id
+            const asignacionId = asignacionSelected.id
+
             const { loadEvaluacion } = get()
-            loadEvaluacion(aulaSelected.id)
-
-            const {setAsignacionIdSelected} = useSelectedStore.getState()
-            setAsignacionIdSelected(asignacionIdSelected)
-            set(() => ({ asignaturasAula: res.data, aulas, asignaturas}))
+            const { periodoSelected } = useSelectedStore.getState()
+            loadEvaluacion(aulaId, asignacionId, periodoSelected.id)
+            set(() => ({ asignaciones, aulas, asignaturas, aulaId, asignacionId }))
         } catch (error) { }
     }
 }))

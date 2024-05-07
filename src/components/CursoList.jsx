@@ -58,6 +58,7 @@ function CursoList() {
     const onSelected = async (curso) => {
         if (curso.activo) return
         setLoadPage(false)        
+        curso.activo = true
         await toggleCurso(curso.id)
         setCursoSelected(curso)
         activarForm(true)
@@ -69,6 +70,7 @@ function CursoList() {
         <div className="table">
             <TaskBar estaEn2doPlano={cursoSelected !== null} onNuevo={onNuevo} onEliminar={onEliminar} >
             <li className="taskbar__item"><Link className="taskbar__link" to="/aula">Aula</Link></li>
+            <li className="taskbar__item"><Link className="taskbar__link" to="/periodo">Periodo</Link></li>
             </TaskBar>
             <div className="table__row table__row__header">
                 <div className="table__col table__col--2x">Año</div>

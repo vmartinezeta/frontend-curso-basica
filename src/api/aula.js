@@ -60,5 +60,5 @@ export const deleteCursoRequest = async (id) => aulaApi.delete("/curso/" + id)
 
 export const findAllAlumnoRequest = async (aulaId) => aulaApi.get("/alumnoAula/" + aulaId)
 export const createAlumnoRequest = async (alumnoAula) => aulaApi.post("/alumnoAula", alumnoAula)
-export const deleteAlumnoRequest = async (id) => aulaApi.delete("/alumno/" + id)
+export const deleteAlumnoRequest = async (id) => aulaApi.delete("/alumnoAula/" + id)
 export const updateAlumnoRequest = async (id, alumno) => aulaApi.put("/alumnoAula/" + id, alumno)

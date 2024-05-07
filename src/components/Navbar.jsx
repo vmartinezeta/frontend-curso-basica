@@ -11,7 +11,9 @@ function Navbar() {
             return <div className="navbar">
                 <ul className="menu-default">
                     <li className="menu-default__item"><NavLink className="menu-default__link" to="/curso">Evaluación</NavLink></li>
-                    <li className="menu-default__item"><NavLink className="menu-default__link" to="/" onClick={logout}>Logout({user.username})</NavLink></li>
+                    <li className="menu-default__item">
+                        <NavLink className="menu-default__link" to="/" onClick={logout}>Logout({user.username})</NavLink>
+                    </li>
                 </ul>
             </div>
         }

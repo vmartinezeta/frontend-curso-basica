@@ -30,6 +30,7 @@ function Login() {
         <form className="loginform" onSubmit={onLogin}>
             <h1 className="loginform__title">Login</h1>
             <input
+                autoFocus={true}
                 {...register("username")}
                 autoComplete="off"
                 className="loginform__input"

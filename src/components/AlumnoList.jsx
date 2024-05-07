@@ -37,8 +37,9 @@ function AlumnoList() {
         if (!confirm("¿Está seguro de eliminar?")) {
             return
         }
+        
         try {
-            await deleteAlumno(alumnoSelected.aID)
+            await deleteAlumno(alumnoSelected.id)
             setAlumnoSelected(null)
             activarForm(false)
             setLoadPage(true)

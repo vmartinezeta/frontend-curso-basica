@@ -2,23 +2,23 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 
-export const useSelectedStore = create(persist((set)=>({
+export const useSelectedStore = create(persist((set) => ({
     cursoSelected: null,
     aulaSelected: null,
-    asignacionIdSelected:null,
-    setAsignacionIdSelected: (asignacionIdSelected)=> {
-        set(()=>({asignacionIdSelected}))
+    periodoSelected: null,
+    setPeriodoSelected: (periodoSelected) => {
+        set(() => ({ periodoSelected }))
     },
-    setCursoSelected: (cursoSelected)=>{
-        set(()=>({
+    setCursoSelected: (cursoSelected) => {
+        set(() => ({
             cursoSelected
         }))
     },
     setAulaSelected: (aulaSelected) => {
-        set(()=>({
+        set(() => ({
             aulaSelected
         }))
     }
 }), {
-    name:"selected"
+    name: "selected"
 }))

@@ -26,8 +26,9 @@ export const useAulaStore = create((set, get) => ({
         } catch (error) { }
     },
     updateAula: async (id, aula) => {
+        console.log({id, aula})
         try {
-            updateAulaRequest(id, aula)
+            await updateAulaRequest(id, aula)
         } catch (error) { }
     },
     deleteAula: async (id) => {
@@ -116,7 +117,7 @@ export const useAulaStore = create((set, get) => ({
     },
     deleteAlumno: async (id) => {
         try {
-            deleteAlumnoRequest(id)
+            await deleteAlumnoRequest(id)
         } catch (error) { }
     },
     updateAlumno: async (id, alumno) => {
