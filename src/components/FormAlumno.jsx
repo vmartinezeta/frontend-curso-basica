@@ -6,12 +6,12 @@ import { useEffect } from "react"
 
 
 function FormAlumno() {
-    const {setLoadPage, isActiveForm, activarForm} = usePageStore()
-    const { alumnoSelected,  createAlumno, updateAlumno } = useAulaStore()
-    const { register, handleSubmit, setValue, reset } = useForm()
+    const { setLoadPage, isActiveForm, activarForm } = usePageStore()
+    const { alumnoSelected, createAlumno, updateAlumno } = useAulaStore()
+    const { register, handleSubmit, setValue, reset, formState:{errors} } = useForm()
 
 
-    useEffect(()=> {
+    useEffect(() => {
         activarForm(false)
     }, [])
 
@@ -39,14 +39,29 @@ function FormAlumno() {
         setLoadPage(true)
     })
 
+
+    const checkError = name => {
+        if (errors[name]) {
+            return "form-nuevo__input form-nuevo__input--error"
+        }
+        return "form-nuevo__input"
+    }
+
     if (!isActiveForm) return null
 
     return <div className="main__col main__col--der">
         <form className="form-nuevo" onSubmit={onSubmit}>
-            <input {...register("nombres")} className="form-nuevo__input" type="text" placeholder="Nombres" />
-            <input {...register("apellidos")} className="form-nuevo__input" type="text" placeholder="Apellidos" />
-            <input {...register("nie")} className="form-nuevo__input" type="text" placeholder="Nie" />
-            <button className="form-nuevo__button">{alumnoSelected!==null?"Actualizar":"Guardar"}</button>
+            <h1 className="form-nuevo__title"><span className="form-nuevo__subtitle">{alumnoSelected !== null ? "Editar" : "Nuevo"}</span>Alumno</h1>
+            <input {...register("nombres", {
+                required:true
+            })} className={checkError("nombres")} type="text" placeholder="Nombres" autoComplete="off" />
+            <input {...register("apellidos",{
+                required:true
+            })} className={checkError("apellidos")} type="text" placeholder="Apellidos" autoComplete="off" />
+            <input {...register("nie", {
+                required:true
+            })} className={checkError("nie")} type="text" placeholder="Nie" autoComplete="off" />
+            <button className="form-nuevo__button">Guardar</button>
         </form>
     </div>
 }

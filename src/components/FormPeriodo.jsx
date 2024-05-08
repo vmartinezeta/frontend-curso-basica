@@ -29,7 +29,7 @@ function FormPeriodo() {
 
     return <div className="main__col main__col--der">
         <form className="form-nuevo" onSubmit={onSubmit}>
-            <h1 className="form-nuevo__title">Año lectivo: {cursoSelected.anyo}</h1>
+            <h1 className="form-nuevo__title"><span className="form-nuevo__subtitle">{cursoSelected.anyo}</span>Año lectivo</h1>
             <select className="form-nuevo__select" {...register("tipoId")}>
                 {
                     tipos.map((tipo) => {

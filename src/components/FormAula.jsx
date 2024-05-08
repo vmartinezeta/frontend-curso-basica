@@ -54,7 +54,7 @@ function FormAula() {
 
     return <div className="main__col main__col--der">
         <form className="form-nuevo" onSubmit={onSubmit}>
-            <h1 className="form-nuevo__title">{aulaSelected !== null ? "Editando aula" : "Nueva aula"}</h1>
+            <h1 className="form-nuevo__title"><span className="form-nuevo__subtitle">{aulaSelected !== null ? "Editar" : "Nueva"}</span>Aula</h1>
             <select className="form-nuevo__select" {...register("gradoId")} defaultChecked={aulaSelected !== null && aulaSelected.grado.id}>
                 {
                     grados.map(g => {
@@ -69,7 +69,7 @@ function FormAula() {
                     })
                 }
             </select>
-            <button className="form-nuevo__button">{aulaSelected !== null ? "Actualizar" : "Guardar"}</button>
+            <button className="form-nuevo__button">Guardar</button>
         </form>
     </div>
 }

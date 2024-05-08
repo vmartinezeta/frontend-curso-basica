@@ -95,7 +95,9 @@ function EvaluacionList() {
     }
 
 
-    if (periodoSelected === null) return <h1 className="main-title">Atención:Pagina en mantenimiento</h1>
+    if (periodoSelected === null) return <div className="main">
+        <h1 className="main__title">Atención:Pagina en mantenimiento</h1>
+    </div>
 
 
     return <div className="main">
@@ -125,7 +127,7 @@ function EvaluacionList() {
                     <div className="table__col table__col--2x">Apellidos</div>
                     <div className="table__col table__col--1x">P1</div>
                     <div className="table__col table__col--1x">P2</div>
-                    <div className="table__col table__col--1x">p3</div>
+                    <div className="table__col table__col--1x">P3</div>
                     {periodoSelected.tipoPeriodo.id===TERCER_PERIODO && <div className="table__col table__col--1x">Ps</div>}
                     <div className="table__col table__col--1x">Prom</div>
                 </div>
@@ -145,7 +147,7 @@ function EvaluacionList() {
                 }
 
                 <div className="control-bottom">
-                    <button className="control-bottom--guardar">Guardar todo</button>
+                    <button className="control-bottom__guardar">Guardar todo</button>
                 </div>
             </form>
         </div>

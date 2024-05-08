@@ -7,7 +7,7 @@ function FormGrado() {
 
     const { isActiveForm, setLoadPage } = usePageStore()
     const { updateGrado, createGrado, gradoSelected } = useAulaStore()
-    const { register, handleSubmit, setValue, reset } = useForm()
+    const { register, handleSubmit, setValue, reset, formState:{errors} } = useForm()
 
     useEffect(() => {
         if (gradoSelected !== null) {
@@ -30,13 +30,26 @@ function FormGrado() {
         setLoadPage(true)
     })
 
+
+    const checkError = name => {
+        if (errors[name]) {
+            return "form-nuevo__input form-nuevo__input--error"
+        }
+        return "form-nuevo__input"
+    }
+
     if (!isActiveForm) return null
 
     return <div className="main__col main__col--der">
         <form className="form-nuevo" onSubmit={onSubmit}>
-            <input {...register("nombre_largo")} className="form-nuevo__input" type="text" placeholder="Nombre largo" />
-            <input {...register("nombre_corto")} className="form-nuevo__input" type="text" placeholder="Nombre corto" />
-            <button className="form-nuevo__button">{gradoSelected !== null ? "Actualizar" : "Guardar"}</button>
+        <h1 className="form-nuevo__title"><span className="form-nuevo__subtitle">{gradoSelected !== null ? "Editar" : "Nuevo"}</span>Grado</h1>
+            <input {...register("nombre_largo", {
+                required:true
+            })} className={checkError("nombre_largo")} type="text" placeholder="Nombre largo" autoComplete="off" autoFocus={true} />
+            <input {...register("nombre_corto",{
+                required:true
+            })} className={checkError("nombre_corto")} type="text" placeholder="Nombre corto" autoComplete="off" />
+            <button className="form-nuevo__button">Guardar</button>
         </form>
     </div>
 }

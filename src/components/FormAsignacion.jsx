@@ -33,6 +33,7 @@ function FormAsignacion() {
 
     return <div className="main__col main__col--der">
         <form  className="form-nuevo" onSubmit={onSubmit}>
+        <h1 className="form-nuevo__title"><span className="form-nuevo__subtitle">Nueva</span>Asignación</h1>
             <select {...register("asignaturaId")} className="form-nuevo__select">
                 {
                     asignaturas.map(asignatura=> {

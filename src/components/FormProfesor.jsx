@@ -4,7 +4,7 @@ import { useAulaStore } from "../store/useAula"
 import { useEffect } from "react"
 
 function FormProfesor() {
-    const { register, handleSubmit, reset, setValue } = useForm()
+    const { register, handleSubmit, reset, setValue, formState:{errors} } = useForm()
     const {setLoadPage, isActiveForm } = usePageStore()
     const {updateProfesor, createProfesor, profesorSelected} = useAulaStore()
 
@@ -36,16 +36,35 @@ function FormProfesor() {
         setLoadPage(true)
     })
 
+
+    const checkError = name => {
+        if (errors[name]) {
+            return "form-nuevo__input form-nuevo__input--error"
+        }
+        return "form-nuevo__input"
+    }
+
     if (!isActiveForm) return null
 
     return <div className="main__col main__col--der">
         <form className="form-nuevo" onSubmit={onSubmit}>
-            <input {...register("nombres")} className="form-nuevo__input" type="text" placeholder="Nombres" />
-            <input {...register("apellidos")} className="form-nuevo__input" type="text" placeholder="Apellidos" />
-            <input {...register("dui")} className="form-nuevo__input" type="text" placeholder="Dui" />
-            <input {...register("username")} className="form-nuevo__input" type="text" placeholder="Username" />
-            <input {...register("password")} className="form-nuevo__input" type="password" placeholder="Password" />
-            <button className="form-nuevo__button">{profesorSelected!==null?"Actualizar":"Guardar"}</button>
+        <h1 className="form-nuevo__title"><span className="form-nuevo__subtitle">{profesorSelected !== null ? "Editar" : "Nuevo"}</span>Profesor</h1>
+            <input {...register("nombres", {
+                required:true
+            })} className={checkError("nombres")} type="text" placeholder="Nombres" autoComplete="off" autoFocus={true} />
+            <input {...register("apellidos",{
+                required:true
+            })} className={checkError("apellidos")} type="text" placeholder="Apellidos" autoComplete="off"  />
+            <input {...register("dui", {
+                required:true
+            })} className={checkError("dui")} type="text" placeholder="Dui" autoComplete="off"  />
+            <input {...register("username", {
+                required:true
+            })} className={checkError("username")} type="text" placeholder="Username"  autoComplete="off" />
+            <input {...register("password", {
+                required:true
+            })} className={checkError("password")} type="password" placeholder="Password" autoComplete="off"  />
+            <button className="form-nuevo__button">Guardar</button>
         </form>
     </div>
 }

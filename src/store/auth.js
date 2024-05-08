@@ -15,8 +15,13 @@ export const useAuthStore = create(persist((set, get) => ({
     } catch (error) { }
   },
   logout: () => {
-    const { setPeriodoSelected } = useSelectedStore.getState()
-    setPeriodoSelected(null)
+    const { resetPeriodo, resetAll } = useSelectedStore.getState()
+    const {user} = get()
+    if (user.rolname==="profesor") {
+      resetPeriodo()
+    } else {
+      resetAll()
+    }
     set(() => ({ user: null, isAuth: false }))
   }
 }),

@@ -35,13 +35,13 @@ function Login() {
                 autoComplete="off"
                 className="loginform__input"
                 type="text"
-                placeholder="username" />
+                placeholder="Username" />
             <input
                 {...register("password")}
                 autoComplete="off"
                 type="password"
                 className="loginform__input"
-                placeholder="password" />
+                placeholder="Password" />
             <button className="loginform__button">Sing in</button>
         </form>
     </div>

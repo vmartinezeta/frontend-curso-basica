@@ -18,7 +18,9 @@ export const useSelectedStore = create(persist((set) => ({
         set(() => ({
             aulaSelected
         }))
-    }
+    },
+    resetPeriodo: ()=> ({periodoSelected:null}),
+    resetAll: ()=> ({cursoSelected:null, aulaSelected:null, periodoSelected:null})
 }), {
     name: "selected"
 }))

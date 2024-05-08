@@ -26,8 +26,9 @@ export const useAulaStore = create((set, get) => ({
         } catch (error) { }
     },
     updateAula: async (id, aula) => {
-        console.log({id, aula})
         try {
+            const { cursoSelected } = useSelectedStore.getState()
+            aula.cursoId = cursoSelected.id
             await updateAulaRequest(id, aula)
         } catch (error) { }
     },

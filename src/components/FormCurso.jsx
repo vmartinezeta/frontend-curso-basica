@@ -9,7 +9,7 @@ function FormCurso() {
     const { isActiveForm, setLoadPage } = usePageStore()
     const { cursoSelected } = useSelectedStore()
     const { createCurso, updateCurso } = useCursoStore()
-    const { register, handleSubmit, setValue, reset } = useForm()
+    const { register, handleSubmit, setValue, reset, formState:{errors} } = useForm()
 
     useEffect(() => {
         if (cursoSelected !== null) {
@@ -31,12 +31,23 @@ function FormCurso() {
         setLoadPage(true)
     })
 
+
+    const checkError = name => {
+        if (errors[name]) {
+            return "form-nuevo__input form-nuevo__input--error"
+        } 
+        return "form-nuevo__input"
+    }
+
     if (!isActiveForm) return
 
     return <div className="main__col main__col--der">
         <form className="form-nuevo" onSubmit={onSubmit}>
-            <input {...register("anyo")} className="form-nuevo__input" type="text" placeholder="Año" />
-            <button className="form-nuevo__button">{cursoSelected !== null ? "Actualizar" : "Guardar"}</button>
+            <h1 className="form-nuevo__title"><span className="form-nuevo__subtitle">{cursoSelected!==null ? "Editar":"Nuevo"}</span> Curso </h1>
+            <input {...register("anyo", {
+                required:true
+            })} className={checkError("anyo")} type="text" placeholder="Año" autoComplete="off" />
+            <button className="form-nuevo__button">Guardar</button>
         </form>
     </div>
 }
